@@ -2,6 +2,10 @@
 
 *[Learn more at **powersmy.biz**](https://powersmy.biz/)*
 
+### 🚀 Hiring Opportunity
+
+**We're hiring!** This challenge is part of our recruitment process for engineering positions. We offer both **remote** and **on-site** work options to accommodate your preferences and lifestyle.
+
 ### 1 ✦ Context
 
 We need a chat-first, AI-powered view of how every engineer and squad are performing—both technically and in terms of business value shipped. Build a **minimum-viable product (MVP)** in fewer than seven days that delivers these insights inside Slack **or** Discord.
