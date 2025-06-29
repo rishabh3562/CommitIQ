@@ -18,7 +18,7 @@ We need a chat-first, AI-powered view of how every engineer and squad are perfor
 | **Data ingestion**       | Pull GitHub events via REST or webhooks. The commits API exposes `additions`, `deletions`, `changed_files` per commit ([docs.github.com][3]); the *List PR files* endpoint gives the same per-file counts ([docs.github.com][4]).                             |
 | **Metrics**              | Track commits, PR throughput, review latency, cycle time, CI failures **plus per-author diff stats** (lines ±, files touched). Optionally fall back to `git log --numstat` for local analysis ([stackoverflow.com][5]).                                       |
 | **Diff analytics layer** | Your *Diff Analyst* agent aggregates churn, flags spikes, and links code-churn outliers to defect risk (research shows churn correlates with bugs) ([stackoverflow.com][6]).                                                                                  |
-| **AI insight layer**     | Agents transform data into daily, weekly, monthly narratives that map to DORA’s four keys (lead-time, deploy frequency, change-failure, MTTR) ([dora.dev][7]). Log every prompt/response for auditability.                                                    |
+| **AI insight layer**     | Agents transform data into daily, weekly, monthly narratives that map to DORA's four keys (lead-time, deploy frequency, change-failure, MTTR) ([dora.dev][7]). Log every prompt/response for auditability.                                                    |
 | **Chat-first output**    | A **Slack bot** (Bolt Python SDK) ([api.slack.com][8]) or **Discord bot** (discord.js slash-command with embeds) ([discordjs.guide][9]) must, on `/dev-report weekly`, post a chart/table + the agent summary. JSON API is optional but the bot is mandatory. |
 | **MVP polish**           | One-command bootstrap (`docker compose up` or `make run`). Include a seed script with fake GitHub events so reviewers see data instantly.                                                                                                                     |
 | **Docs**                 | `README.md` with bot install guide and an architecture diagram showing LangGraph nodes/edges, storage and chat layer.                                                                                                                                         |
@@ -33,8 +33,8 @@ We need a chat-first, AI-powered view of how every engineer and squad are perfor
 
 ### 4 ✦ Stretch Goals (optional)
 
-* Forecast next week’s cycle time or churn.
-* Code-review “influence map” graph.
+* Forecast next week's cycle time or churn.
+* Code-review "influence map" graph.
 * Pluggable LLM driver (OpenAI ↔ local Llama) in < 15 min.
 * Scheduled digests (bot auto-drops Monday summary).
 
@@ -45,8 +45,8 @@ We need a chat-first, AI-powered view of how every engineer and squad are perfor
 
 ### 6 ✦ Timeline
 
-*Fork today → PR in **72 hours** (extensions on request).*
-We’ll smoke-test your bot in our workspace, then book your interview.
+*Fork today → PR in **7 days** (extensions on request).*
+We'll smoke-test your bot in our workspace, then book your interview.
 
 ### 7 ✦ Evaluation Rubric (100 pts)
 
@@ -67,7 +67,7 @@ We’ll smoke-test your bot in our workspace, then book your interview.
 
 ### 9 ✦ Ground Rules
 
-Original work only; public libs are fine. Don’t commit real secrets. We may open-source the winning MVP with credit.
+Original work only; public libs are fine. Don't commit real secrets. We may open-source the winning MVP with credit.
 
 > **Ready?** Fork ✦ Build ✦ PR ✦ Impress us.
 > Questions → **[founder@powersmy.biz](mailto:founder@powersmy.biz)**
