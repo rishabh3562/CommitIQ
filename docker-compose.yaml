@@ -1,6 +1,11 @@
+version: '3.9'
+
 services:
   fika-bot:
     build: .
     env_file: .env
     restart: unless-stopped
     command: make run
+    volumes:
+      - .:/app
+    working_dir: /app

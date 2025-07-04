@@ -28,6 +28,7 @@ def parse_flags(flags_text):
             opts["to"] = datetime.now().isoformat()  # up to now
 
     return opts
+
 def slack_progress_message(prefix: str, count: int, time_per_commit: float = 0.2):
     est_time = round(count * time_per_commit, 1)
     if est_time > 10:
