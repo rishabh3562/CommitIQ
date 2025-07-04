@@ -1,0 +1,6 @@
+services:
+  fika-bot:
+    build: .
+    env_file: .env
+    restart: unless-stopped
+    command: make run
