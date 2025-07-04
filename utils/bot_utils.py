@@ -1,5 +1,6 @@
 from dateutil.parser import parse as dt_parse
 from datetime import datetime, timedelta
+from utils.logger import logger
 def parse_flags(flags_text):
     opts = {"period": "weekly", "graph": True, "from": None, "to": None}
     tokens = flags_text.strip().split()
@@ -27,3 +28,13 @@ def parse_flags(flags_text):
             opts["to"] = datetime.now().isoformat()  # up to now
 
     return opts
+def slack_progress_message(prefix: str, count: int, time_per_commit: float = 0.2):
+    est_time = round(count * time_per_commit, 1)
+    if est_time > 10:
+        msg = (
+            # f"{prefix} Retrieved {count} commits.\n"
+            "🟡 This might take a while... grab a coffee or go for a walk."
+        )
+    else:
+        msg = f"{prefix} Retrieved {count} commits. ⏳ Estimated time: {est_time} min."
+    logger.log(msg)
