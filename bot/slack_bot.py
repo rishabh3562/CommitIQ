@@ -1,16 +1,6 @@
 import os
-from slack_bolt import App
-from slack_bolt.adapter.socket_mode import SocketModeHandler
-
-SLACK_APP_TOKEN = os.getenv("SLACK_APP_TOKEN")
-
-
-app = App(
-    token=os.getenv("SLACK_BOT_TOKEN"),
-    signing_secret=os.getenv("SLACK_SIGNING_SECRET")
-)
-
-
+from configs.slack import app,socket_handler
+from utils import logger
 @app.command("/test")
 def handle_test(ack, say, command):
     try:
@@ -50,4 +40,5 @@ if __name__ == "__main__":
     from dotenv import load_dotenv
     load_dotenv(override=True)
     print("Starting bot in Socket Mode...")
-    SocketModeHandler(app, SLACK_APP_TOKEN).start()
+    socket_handler.start()
+    
