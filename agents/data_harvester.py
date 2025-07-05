@@ -90,5 +90,5 @@ def run_data_harvester(state: WorkflowState) -> dict:
     pretty = deepcopy(result)
     for r in pretty["raw_commits"]:
         r.pop("files_detail", None)
-    # pprint(pretty)    
+    pprint(pretty)    
     return {"harvester": result}
