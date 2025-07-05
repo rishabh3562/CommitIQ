@@ -3,7 +3,8 @@ services:
     build: .
     env_file: .env
     restart: unless-stopped
-    command: python -u main.py
+    command: watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- python -u main.py
     volumes:
       - .:/app
     working_dir: /app
+    depends_on: []

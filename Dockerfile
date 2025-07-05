@@ -18,6 +18,9 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install watchdog for hot-reloading
+RUN pip install watchdog
+
 # Copy the rest of the application code
 COPY . .
 
@@ -25,5 +28,5 @@ COPY . .
 RUN apt-get update && apt-get install -y make && rm -rf /var/lib/apt/lists/*
 
 # Default command (overridden by docker-compose)
-CMD ["make", "run"]
+CMD ["python", "main.py"]
 
