@@ -12,7 +12,7 @@ from utils.bot_utils import slack_progress_message
 
 def run_data_harvester(state: WorkflowState) -> dict:
     # logger.slack_log_func
-    logger.terminal_log("[HARVESTER] ⛏ Starting data harvest")
+    logger.terminal_log("[HARVESTER]2 ⛏ Starting data harvest")
     logger.terminal_log(f"[HARVESTER] Target repo: {state.owner}/{state.repo} since {state.since}")
     
 
@@ -24,6 +24,7 @@ def run_data_harvester(state: WorkflowState) -> dict:
     for idx, c in enumerate(commits, 1):
         sha = c["sha"]
         author = c["commit"]["author"]["name"]
+        email = c["commit"]["author"]["email"]
         date = c["commit"]["author"]["date"]
         # fetch full commit stats (additions/deletions/files)
         detail = get_commit_by_sha(state.owner, state.repo, sha)
@@ -35,6 +36,7 @@ def run_data_harvester(state: WorkflowState) -> dict:
         record = {
             "sha":         sha,
             "author":      author,
+            "email":       email,
             "date":        date,
             # code‑change metrics
             "additions":  additions,
