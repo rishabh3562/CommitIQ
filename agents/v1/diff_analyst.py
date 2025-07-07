@@ -1,5 +1,5 @@
 from schemas.workflow_state import WorkflowState
-from utils.logger import logger
+from utils.v1.logger import logger
 
 def run_diff_analyst(state: WorkflowState) -> dict:
     raw = state.harvester["raw_commits"]

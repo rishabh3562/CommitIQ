@@ -1,76 +1,30 @@
-# state.py
-from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
-from langgraph.graph.state import state
+### state.py
+from typing import Annotated, List, TypedDict
+import operator
 
-# File: workflow/state.py
-from pydantic import BaseModel, Field
-from typing import List, Dict, Optional, Annotated
-# utils/merge.py
-def merge_commits(old, new):
-    return (old or []) + (new or [])
-
-
-class RawCommit(BaseModel):
-    sha: str
-    author: str
-    email: str
-    date: str
-    additions: int
-    deletions: int
-    files_touched: int
-    files_detail: List[dict]
-    is_pr: bool
-    ci_failures: int
-    latency: Optional[float]
-    cycle_time: Optional[float]
-
-
-class HarvesterOutput(BaseModel):
-    raw_commits: List[RawCommit]
-
-
-class AnalystOutput(BaseModel):
-    author_stats: Dict[str, Dict[str, int]]
-    spikes: List[str]
-
-
-class CollectorOutput(BaseModel):
-    raw_commits: List[RawCommit]
-    author_stats: Dict[str, Dict[str, int]]
-    spikes: List[str]
-
-
-class NarratorOutput(BaseModel):
-    summary: str
-    insights: Dict[str, str]
-    stats: Dict[str, Optional[Dict[str, object]]]
-
-class ParallelWorkflowState(BaseModel):
+class ParallelWorkflowStateV2(TypedDict, total=False):
+    # Pre-aggregator
     owner: str
     repo: str
     since: str
-    raw_commits: Annotated[List[RawCommit], State(update="extend")]
-    # Annotated if you want these to be treated as message-passed channels
-    harvesters: Annotated[Dict[str, HarvesterOutput], "harvest_out"]
-    analysts: Annotated[Dict[str, AnalystOutput], "diff_out"]
-    collector: Optional[CollectorOutput] = None
-    narrator: Optional[NarratorOutput] = None
-    owner: str
-    repo: str
-    since: str
+    until: str
+    shards: List[List[dict]]
+    harvested: Annotated[List[dict], operator.add]
+    analyzed: Annotated[List[dict], operator.add]
+    harvested_shards: Annotated[List[List[dict]], operator.add]
+    diff_results: Annotated[List[dict], operator.add]
 
-    raw_commits: Annotated[List[RawCommit], merge_commits] = Field(default_factory=list)
+    # Post-aggregator
+    aggregated: dict  # Final metrics & insights
+    final_report: dict
 
-    harvesters: Dict[str, HarvesterOutput] = Field(default_factory=dict)
-    analysts: Dict[str, AnalystOutput] = Field(default_factory=dict)
-    collector: Optional[CollectorOutput] = None
-    narrator: Optional[NarratorOutput] = None
-    owner: str
-    repo: str
-    since: str
-    raw_commits: Annotated[List[RawCommit], merge_commits] = Field(default_factory=list)
-    harvesters: Dict[str, HarvesterOutput] = Field(default_factory=dict)
-    analysts: Dict[str, AnalystOutput] = Field(default_factory=dict)
-    collector: Optional[CollectorOutput] = None
-    narrator: Optional[NarratorOutput] = None
+    # Narrator output
+    dora: dict
+    other: dict
+    dora_summary: str
+    other_summary: str
+    llm_summary: str
+    insights: Annotated[List[str], operator.add]  # ← preserve for compatibility
+
+    # Slack formatting or combined display
+    combined: dict

@@ -16,6 +16,7 @@ def parse_dt(val):
         return None
 
 def aggregator(state):
+    print("[AGGREGATOR] Start")
     analyzed = state.get("analyzed", [])
     since = state.get("since")
     until = state.get("until")
@@ -144,6 +145,7 @@ def aggregator(state):
         except:
             continue
     repo_metrics["mttr_hours"] = round(sum(mttrs) / len(mttrs), 2) if mttrs else 0.0
+    print("[AGGREGATOR] END")
     return {
         "aggregated": {
             "since": since,

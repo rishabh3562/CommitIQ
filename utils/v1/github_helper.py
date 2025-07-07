@@ -2,7 +2,7 @@ import json, requests
 from datetime import datetime
 from configs.github import HEADERS, API_BASE
 
-def get_commits(owner, repo, since=None, until=None):
+def get_commits(owner, repo, since=None):
     commits, page = [], 1
     while True:
         params = {"since": since, "per_page": 100, "page": page}
@@ -58,13 +58,3 @@ def get_cycle_time_for_pr(owner, repo, pr_number):
     created = datetime.fromisoformat(pr["created_at"].rstrip("Z"))
     merged = datetime.fromisoformat(pr["merged_at"].rstrip("Z"))
     return round((merged - created).total_seconds() / 3600, 2)
-
-
-def compute_lead_time(commit_date_str: str, pr_merged_at_str: str) -> float:
-    try:
-        commit_time = datetime.fromisoformat(commit_date_str.replace("Z", "+00:00"))
-        pr_merge_time = datetime.fromisoformat(pr_merged_at_str.replace("Z", "+00:00"))
-        delta = pr_merge_time - commit_time
-        return round(delta.total_seconds() / 3600, 2)  # in hours
-    except Exception:
-        return 0.0
