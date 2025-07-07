@@ -115,3 +115,22 @@ def plot_individual_graphs(stats: dict) -> dict:
     return buffers
 
 
+def plot_commit_trends(daily_counts: dict[str, list[int]]) -> dict:
+    """
+    daily_counts: { author: [counts_per_day…] }
+    """
+    buffers = {}
+    for author, counts in daily_counts.items():
+        fig, ax = plt.subplots(figsize=(8,2))
+        ax.plot(counts, marker="o")
+        ax.set_title(f"{author} — Commits per Day")
+        ax.set_xlabel("Day")
+        ax.set_ylabel("Commits")
+        ax.grid(True)
+        fig.tight_layout()
+
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png")
+        buf.seek(0)
+        buffers[f"{author}_trend.png"] = buf
+    return buffers

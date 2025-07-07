@@ -1,5 +1,5 @@
 import os
-from configs.slack import app,socket_handler
+from configs.slack_v1 import app,socket_handler
 from utils import logger,parse_flags,iso_now_minus,dt_parse
 from workflow import slack_workflow
 from viz import plot_individual_graphs
@@ -151,4 +151,9 @@ if __name__ == "__main__":
     load_dotenv(override=True)
     print("Starting bot in Socket Mode...")
     socket_handler.start()
-    
+
+
+def run_v1():
+    print("[V1] Starting bot in Socket Mode...")
+    socket_handler.start()
+
