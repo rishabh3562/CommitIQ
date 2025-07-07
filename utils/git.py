@@ -13,22 +13,6 @@ def get_commits(owner, repo, since=None, until=None):
         commits += batch
         page += 1
     return commits
-def get_full_commit(owner, repo, since=None, until=None):
-    commits, page = [], 1
-    while True:
-        params = {"since": since, "until": until, "per_page": 100, "page": page}
-        r = requests.get(f"{API_BASE}/repos/{owner}/{repo}/commits", headers=HEADERS, params=params)
-        r.raise_for_status()
-        batch = r.json()
-        if not batch: break
-
-        for c in batch:
-            full_commit = requests.get(c["url"], headers=HEADERS)
-            full_commit.raise_for_status()
-            commits.append(full_commit.json())
-
-        page += 1
-    return commits
 
 def get_incident_issues(owner, repo, since=None):
     params = {"labels": "bug", "state": "closed", "since": since, "per_page": 100}
@@ -67,29 +51,6 @@ def get_review_latency_for_pr(owner, repo, pr_number):
     first = datetime.fromisoformat(submitted.rstrip("Z"))
     return round((first - created).total_seconds() / 3600, 2)
 
-def get_lead_time_for_pr(pr: dict, harvested_shards: list[list[dict]]) -> float:
-    pr_created_at = datetime.fromisoformat(pr["created_at"].replace("Z", "+00:00"))
-    all_commits = [commit for shard in harvested_shards for commit in shard]
-    related_commits = [
-        c for c in all_commits
-        if c["repo"] == pr["repo"] and c["owner"] == pr["owner"] and c["sha"] in pr.get("commit_shas", [])
-    ]
-    if not related_commits:
-        return 0.0
-    first_commit_time = min(datetime.fromisoformat(c["date"].replace("Z", "+00:00")) for c in related_commits)
-    return (pr_created_at - first_commit_time).total_seconds() / 3600
-
-
-
-from datetime import datetime
-
-def compute_lead_time(commit_date: str, pr_merged_at: str) -> float:
-    try:
-        commit_dt = datetime.fromisoformat(commit_date.replace("Z", "+00:00"))
-        merged_dt = datetime.fromisoformat(pr_merged_at.replace("Z", "+00:00"))
-        return (merged_dt - commit_dt).total_seconds() / 3600
-    except Exception:
-        return 0.0
 def get_cycle_time_for_pr(owner, repo, pr_number):
     r = requests.get(f"{API_BASE}/repos/{owner}/{repo}/pulls/{pr_number}", headers=HEADERS)
     pr = r.json()
@@ -97,3 +58,13 @@ def get_cycle_time_for_pr(owner, repo, pr_number):
     created = datetime.fromisoformat(pr["created_at"].rstrip("Z"))
     merged = datetime.fromisoformat(pr["merged_at"].rstrip("Z"))
     return round((merged - created).total_seconds() / 3600, 2)
+
+
+def compute_lead_time(commit_date_str: str, pr_merged_at_str: str) -> float:
+    try:
+        commit_time = datetime.fromisoformat(commit_date_str.replace("Z", "+00:00"))
+        pr_merge_time = datetime.fromisoformat(pr_merged_at_str.replace("Z", "+00:00"))
+        delta = pr_merge_time - commit_time
+        return round(delta.total_seconds() / 3600, 2)  # in hours
+    except Exception:
+        return 0.0

@@ -17,3 +17,14 @@ INSIGHT_SUMMARY_INPUT_VARS = [
     "stats", "pr_throughput", "ci_failures", "review_latency", "cycle_time", "spikes",
     "total_commits", "lines_added", "lines_deleted", "files_touched", "mttr"
 ]
+INSIGHT_SUMMARY_INPUT_VARS_V2 = ["dora_summary", "other_summary"]
+
+INSIGHT_SUMMARY_TEMPLATE_V2 = """You are an engineering performance analyst.
+
+## DORA Metrics Summary
+{dora_summary}
+
+## Additional Engineering Insights
+{other_summary}
+
+Write a concise executive summary highlighting key takeaways from both sections. Be sharp and brief."""

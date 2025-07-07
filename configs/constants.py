@@ -2,8 +2,11 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-
+NUM_PARALLEL = 5  # Change as needed
+NUM_SHARDS = NUM_PARALLEL
+SPIKE_THRESHOLD=1000
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GITHUB_REPO="rishabh3562/PromptOps"
 USE_FAKE_DATA = os.getenv("USE_FAKE_DATA", "False").lower() == "true"
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")

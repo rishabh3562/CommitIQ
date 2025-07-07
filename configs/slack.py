@@ -1,5 +1,5 @@
-# from dotenv import load_dotenv
-# load_dotenv(override=True)
+from dotenv import load_dotenv
+load_dotenv(override=True)
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
