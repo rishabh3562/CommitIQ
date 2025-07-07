@@ -1,9 +1,9 @@
 # workflow/productivity_insight_flow.py
 from langgraph.graph import StateGraph
 from schemas.workflow_state import WorkflowState
-from agents.data_harvester import run_data_harvester
-from agents.diff_analyst import run_diff_analyst
-from agents.insight_narrator import run_insight_narrator
+from agents.v1.data_harvester import run_data_harvester
+from agents.v1.diff_analyst import run_diff_analyst
+from agents.v1.insight_narrator import run_insight_narrator
 
 def productivity_insight_flow(seed=False):
     g = StateGraph(WorkflowState)

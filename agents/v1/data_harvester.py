@@ -1,13 +1,13 @@
-from utils.github_helper import (
+from utils.v1.github_helper import (
     get_commits, get_commit_by_sha, get_pr_files, get_pr_for_commit,
     get_ci_failures_for_pr, get_review_latency_for_pr, get_cycle_time_for_pr
 )
 from schemas.workflow_state import WorkflowState
-from utils.logger import logger
+from utils.v1.logger import logger
 import requests
 from copy import deepcopy
 from pprint import pprint
-from utils.bot_utils import slack_progress_message
+from utils.v1.bot_utils import slack_progress_message
 
 
 def run_data_harvester(state: WorkflowState) -> dict:

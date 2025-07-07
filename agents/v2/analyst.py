@@ -1,9 +1,6 @@
-# from utils.github_helper import (
-#     get_pr_for_commit, get_review_latency_for_pr,
-#     get_cycle_time_for_pr, get_ci_failures_for_pr,compute_lead_time
-# )
+
 from configs.constants import NUM_SHARDS
-from utils.github_helper import (
+from utils.v2.github_helper import (
     get_pr_for_commit, get_review_latency_for_pr,
     get_cycle_time_for_pr, get_ci_failures_for_pr,
     compute_lead_time

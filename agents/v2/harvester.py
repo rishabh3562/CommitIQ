@@ -22,7 +22,7 @@ def process_commit(commit, owner, repo):
 
 # agents/harvester.py
 def make_harvester(i):
-    print(f"Creating harvester {i}")
+    print(f"[HARVESTER] Creating harvester {i}")
     def harvester_fn(state):
         shard = state["shards"][i]
 

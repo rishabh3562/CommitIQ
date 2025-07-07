@@ -1,5 +1,5 @@
 from configs.langchain import parallel_insight_chain
-from utils.dora import * # etc.
+from utils.v2.dora import * # etc.
 
 
 def generate_dora_summary(prs, ci_failed_prs, incidents):
@@ -66,6 +66,7 @@ def extract_other_v2(repo, authors):
     }
 
 async def narrator_parallel(state):
+    print("[NARRATOR] Started")
     repo = state.get("aggregated", {}).get("repo", {}) or {}
     authors = state.get("aggregated", {}).get("authors", {}) or {}
 
@@ -104,7 +105,7 @@ async def narrator_parallel(state):
         })
     except Exception as e:
         llm_response = f"[ERROR] Failed to generate LLM insights: {e}"
-
+    print("[NARRATOR] End")
     return {
         "dora": dora,
         "other": other,
