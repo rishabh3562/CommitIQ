@@ -10,6 +10,7 @@
 ## 📑 Table of Contents
 
 * [Overview](#overview)
+* [Demo Video](#demo)
 * [Features](#features)
 * [Architecture](#architecture)
 * [Setup ](#setup-)
@@ -40,6 +41,10 @@ FIKA AI is a chat-first, agent-powered productivity analytics tool for engineeri
 
 ---
 
+## Demo
+https://drive.google.com/file/d/1p4sH1z1-TQTgUXcS_LiAG1EKVd70qvsU/view
+
+---
 ## Architecture
 
 LangGraph-powered, deterministic flow:
