@@ -1,2 +1,2 @@
-from .metrics_plotter import *
+from .v1.metrics_plotter import *
 

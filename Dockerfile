@@ -19,7 +19,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install watchdog for hot-reloading
-RUN pip install watchdog
+# RUN pip install watchdog
 
 # Copy the rest of the application code
 COPY . .

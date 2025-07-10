@@ -1,6 +1,6 @@
 from dateutil.parser import parse as dt_parse
 from datetime import datetime, timedelta
-from utils.logger import logger
+from utils.v1.logger import logger
 def parse_flags(flags_text):
     opts = {"period": "weekly", "graph": True, "from": None, "to": None}
     tokens = flags_text.strip().split()
