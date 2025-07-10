@@ -17,7 +17,7 @@
 * [Visualization](#visualization)
 * [Prompt Logging](#prompt-logging)
 * [Tech Stack](#tech-stack)
-* [Contributing / Testing](#contributing--testing)
+* [Contributing](#contributing)
 * [License](#license)
 
 ---
@@ -41,12 +41,22 @@
 ## Architecture
 
 ```
-Harvester (GitHub data)
-     ↓
-Analyst (diff stats, churn, CI health)
-     ↓
-Narrator (DORA insights, summary generation)
+start_node
+   ↓
+harvester_orchestrator
+   ↓↘︎↘︎↘︎      (parallel)
+harvester_i → diff_analyst_i
+   ↘︎↘︎↘︎
+batch_collector
+   ↓
+aggregator
+   ↓
+narrator
+   ↓
+slack_reporter
 ```
+
+Each `harvester_i` and corresponding `diff_analyst_i` node runs in **parallel**, managed by `harvester_orchestrator`. All analysis results are merged via `batch_collector` before aggregation and insight narration.
 
 ---
 
@@ -74,7 +84,7 @@ Fill in your keys:
 # GitHub
 GITHUB_TOKEN=ghp_xxx                  # GitHub personal access token with repo read access
 
-#only in v1(not used though but good to have this)
+#only in v1 (not used though but good to have this)
 USE_FAKE_DATA=False
 
 # Slack
@@ -87,7 +97,6 @@ OPENAI_API_KEY=sk-xxx                 # Required if you're using OpenAI
 
 # Optional - if using LangGraph/chain-specific services
 LANGCHAIN_API_KEY=xxx                 # If using LangSmith for logging/tracing
-
 ```
 
 ---
@@ -126,36 +135,37 @@ Generates AI-powered GitHub report with:
 
 ## Agents
 
-* **Harvester** – Fetches commits, PRs, CI data
-* **Analyst** – Calculates diffs and churn
-* **Narrator** – Summarizes findings using DORA metrics
+* **start\_node** – Initializes the state
+* **harvester\_orchestrator** – Launches parallel harvesters
+* **harvester\_i** – Fetches GitHub commits in segments
+* **diff\_analyst\_i** – Analyzes diffs per segment
+* **batch\_collector** – Merges results from all analysts
+* **aggregator** – Computes DORA and code metrics
+* **narrator** – Generates summaries and insights
+* **slack\_reporter** – Sends results to Slack
 
 ---
 
 ## Data Flow
 
-1. GitHub data collected
-2. Code-level stats computed
-3. Insights generated for:
-
-   * Lead time
-   * Deployment frequency
-   * Change failure rate
-   * Mean time to restore
+1. GitHub data collected in shards
+2. Each shard is analyzed for diffs and churn
+3. All results collected, aggregated, and summarized
+4. Report posted to Slack with chart and narrative
 
 ---
 
 ## Visualization
 
-* Charts rendered using matplotlib
-* Sent as PNG in Slack thread
+* Charts rendered using `matplotlib`
+* Sent as PNG in Slack threads
 
 ---
 
 ## Prompt Logging
 
-* Inputs, prompts, responses logged
-* Optional file logging enabled
+* Inputs, prompts, and responses are logged
+* Optional file-based logging support
 
 ---
 
@@ -163,8 +173,8 @@ Generates AI-powered GitHub report with:
 
 * **LangChain** `0.3.26`
 * **LangGraph OSS** `0.5.0`
-* **Slack Bolt (Python)**
-* **matplotlib**, **Docker**
+* \*\*Slack Bolt (Python)\`
+* **matplotlib**, **Docker**, **Python 3.10+**
 
 ---
 
@@ -172,10 +182,10 @@ Generates AI-powered GitHub report with:
 
 PRs welcome — this repository follows formal open-source standards:
 
-- [Code of Conduct](./CODE_OF_CONDUCT.md)
-- [Contributing Guide](./CONTRIBUTING.md)
-- [Issue Template](.github/ISSUE_TEMPLATE.md)
-- [Security Policy](./SECURITY.md)
+* [Code of Conduct](./CODE_OF_CONDUCT.md)
+* [Contributing Guide](./CONTRIBUTING.md)
+* [Issue Template](./ISSUE_TEMPLATE.md)
+* [Security Policy](./SECURITY.md)
 
 Please review them before contributing or reporting issues.
 
@@ -184,6 +194,3 @@ Please review them before contributing or reporting issues.
 ## License
 
 [MIT License](LICENSE)
-
-
-
