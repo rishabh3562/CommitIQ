@@ -231,4 +231,5 @@ def global_error_handler(error, body, logger):
     logger.error(f"[Slack Bot Error] {error}")
 def run_v2():
     print("[V2] Starting bot in Socket Mode...")
-    socket_handler.start()  
+    socket_handler.start()
+print("[V2] Bot is ready to run!")  
