@@ -95,8 +95,11 @@ SLACK_SIGNING_SECRET=xxxx             # Slack signing secret
 # OpenAI (or other LLM)
 OPENAI_API_KEY=sk-xxx                 # Required if you're using OpenAI
 
-# Optional - if using LangGraph/chain-specific services
-LANGCHAIN_API_KEY=xxx                 # If using LangSmith for logging/tracing
+# LangSmith Configuration (Optional)
+LANGSMITH_TRACING=true                 # Enable LangSmith tracing
+LANGSMITH_API_KEY=ls_xxx              # LangSmith API key
+LANGSMITH_PROJECT=commitiq-productivity # Project name in LangSmith
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com # LangSmith endpoint
 ```
 
 ---
@@ -166,6 +169,7 @@ Generates AI-powered GitHub report with:
 
 - Inputs, prompts, and responses are logged
 - Optional file-based logging support
+- **LangSmith Integration**: Automatic tracing of LLM interactions when configured
 
 ---
 

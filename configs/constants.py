@@ -17,7 +17,8 @@ SLACK_USER_OAUTH_TOKEN = os.getenv("SLACK_USER_OAUTH_TOKEN")
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# LANGSMITH_TRACING = os.getenv("LANGSMITH_TRACING", "false").lower() == "true"
-# LANGSMITH_ENDPOINT = os.getenv("LANGSMITH_ENDPOINT")
-# LANGSMITH_API_KEY = os.getenv("LANGSMITH_API_KEY")
-# LANGSMITH_PROJECT = os.getenv("LANGSMITH_PROJECT")
+# LangSmith Configuration
+LANGSMITH_TRACING = os.getenv("LANGSMITH_TRACING", "false").lower() == "true"
+LANGSMITH_ENDPOINT = os.getenv("LANGSMITH_ENDPOINT", "https://api.smith.langchain.com")
+LANGSMITH_API_KEY = os.getenv("LANGSMITH_API_KEY")
+LANGSMITH_PROJECT = os.getenv("LANGSMITH_PROJECT", "commitiq-productivity")

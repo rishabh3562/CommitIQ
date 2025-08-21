@@ -1,5 +1,6 @@
 from configs.langchain import parallel_insight_chain
 from utils.v2.dora import * # etc.
+from utils.common.langsmith_setup import get_langsmith_config
 
 
 def generate_dora_summary(prs, ci_failed_prs, incidents):
@@ -67,6 +68,12 @@ def extract_other_v2(repo, authors):
 
 async def narrator_parallel(state):
     print("[NARRATOR] Started")
+    
+    # Log LangSmith configuration status
+    langsmith_config = get_langsmith_config()
+    if langsmith_config["tracing_enabled"]:
+        print(f"[NARRATOR] LangSmith tracing enabled for project: {langsmith_config['project']}")
+    
     repo = state.get("aggregated", {}).get("repo", {}) or {}
     authors = state.get("aggregated", {}).get("authors", {}) or {}
 
@@ -99,12 +106,15 @@ async def narrator_parallel(state):
     )
 
     try:
+        # This will be automatically traced by LangSmith if enabled
         llm_response = await parallel_insight_chain.ainvoke({
             "dora_summary": dora_summary,
             "other_summary": other_summary,
         })
     except Exception as e:
         llm_response = f"[ERROR] Failed to generate LLM insights: {e}"
+        print(f"[NARRATOR] LLM Error: {e}")
+    
     print("[NARRATOR] End")
     return {
         "dora": dora,
