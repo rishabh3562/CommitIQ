@@ -1,18 +1,18 @@
 
-from configs.constants import NUM_SHARDS
+from configs.constants import DATA_SHARDS
 from utils.v2.github_helper import (
     get_pr_for_commit, get_review_latency_for_pr,
     get_cycle_time_for_pr, get_ci_failures_for_pr,
     compute_lead_time
 )
-from configs.constants import NUM_SHARDS, SPIKE_THRESHOLD
+from configs.constants import DATA_SHARDS, CHURN_LIMIT
 def safe_float(val):
     try:
         return float(val) if val is not None else 0.0
     except:
         return 0.0
 
-def analyze_diff(commit):
+def review_code_changes(commit):
     sha    = commit["sha"]
     owner  = commit["owner"]
     repo   = commit["repo"]
@@ -26,7 +26,7 @@ def analyze_diff(commit):
     lines_changed = additions + deletions
     churn_score = round(lines_changed / files_changed, 2) if files_changed else 0.0
 
-    spike_flag    = lines_changed >= SPIKE_THRESHOLD
+    spike_flag    = lines_changed >= CHURN_LIMIT
 
     # PR metadata
     pr_list    = get_pr_for_commit(owner, repo, sha) or []
@@ -63,10 +63,10 @@ def analyze_diff(commit):
         "spike_flag": spike_flag
     }
 
-def make_diff_analyst(i):
-    def diff_fn(state):
-        shard_data = state.get("harvested_shards", [])
-        commits = shard_data[i] if i < len(shard_data) else []
+def make_code_reviewer(i):
+    def reviewer_fn(state):
+        segment_data = state.get("collected_data", [])
+        commits = segment_data[i] if i < len(segment_data) else []
         inc_map = {i["incident_sha"]: i for i in state.get("incidents", [])}
 
         for c in commits:
@@ -75,10 +75,10 @@ def make_diff_analyst(i):
                 c["incident_created_at"] = inc.get("created")
                 c["incident_resolved_at"] = inc.get("resolved")
 
-        print(f"[DIFF_ANALYST-{i}] Analyzing {len(commits)} commits")
-        results = [{ **analyze_diff(c), "shard_id": c.get("shard_id", i), "total_shards": c.get("total_shards", NUM_SHARDS) }
+        print(f"[CODE_REVIEWER-{i}] Reviewing {len(commits)} commits")
+        results = [{ **review_code_changes(c), "segment_id": c.get("segment_id", i), "total_segments": c.get("total_segments", DATA_SHARDS) }
                 for c in commits]
-        return { "diff_results": results }
+        return { "analysis_output": results }
 
-    return diff_fn
+    return reviewer_fn
 

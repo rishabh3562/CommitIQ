@@ -1,10 +1,10 @@
-# agents/harvester.py
+# agents/data_collector.py
 import requests
 from datetime import datetime
 from configs.github import HEADERS, API_BASE
-from configs.constants import NUM_SHARDS
+from configs.constants import DATA_SHARDS
 # from configs.github import HEADERS, API_BASE
-def process_commit(commit, owner, repo):
+def extract_commit_data(commit, owner, repo):
     return {
         "sha": commit["sha"],
         "author": commit["commit"]["author"]["name"],
@@ -20,28 +20,28 @@ def process_commit(commit, owner, repo):
 
 
 
-# agents/harvester.py
-def make_harvester(i):
-    print(f"[HARVESTER] Creating harvester {i}")
-    def harvester_fn(state):
-        shard = state["shards"][i]
+# agents/data_collector.py
+def make_data_collector(i):
+    print(f"[DATA_COLLECTOR] Creating data collector {i}")
+    def collector_fn(state):
+        segment = state["data_segments"][i]
 
-        print(f"[HARVESTER-{i}] Harvesting data for shard {i} with commit {len(shard)}")
+        print(f"[DATA_COLLECTOR-{i}] Collecting data for segment {i} with commit {len(segment)}")
         owner = state["owner"]
         repo = state["repo"]
 
-        for c in shard:
+        for c in segment:
             c["owner"] = owner
             c["repo"] = repo
 
         processed = [
-    {**process_commit(c, owner, repo), "shard_id": c.get("shard_id", i), "total_shards": c.get("total_shards", NUM_SHARDS)}
-    for c in shard
+    {**extract_commit_data(c, owner, repo), "segment_id": c.get("segment_id", i), "total_segments": c.get("total_segments", DATA_SHARDS)}
+    for c in segment
 ]
-        # return {"harvested_shards": [processed]}
+        # return {"collected_data": [processed]}
 
-        # return {"harvested": processed}
+        # return {"collected": processed}
         return {
-    "harvested_shards": [processed]  # ← List[dict] → wrapped in outer list
+    "collected_data": [processed]  # ← List[dict] → wrapped in outer list
     }
-    return harvester_fn
+    return collector_fn

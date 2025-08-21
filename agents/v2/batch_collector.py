@@ -1,10 +1,10 @@
-from configs.constants import NUM_PARALLEL
+from configs.constants import CONCURRENT_WORKERS
 ## agents/batch_collector.py
 def batch_collector(state):
-    print(f"[COLLECTOR] Received {len(state['diff_results'])} total analyzed results")
+    print(f"[COLLECTOR] Received {len(state['analysis_output'])} total analyzed results")
 
-    all_results = state.get("diff_results", [])
-    return {"analyzed": all_results, "combined": all_results}
+    all_results = state.get("analysis_output", [])
+    return {"processed": all_results, "combined": all_results}
 
 # def batch_collector(state):
 #     all_results = []

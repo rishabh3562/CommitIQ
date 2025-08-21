@@ -7,18 +7,18 @@
 
 ## 📑 Table of Contents
 
-* [Overview](#overview)
-* [Features](#features)
-* [Architecture](#architecture)
-* [Setup](#setup)
-* [Usage](#usage)
-* [Agents](#agents)
-* [Data Flow](#data-flow)
-* [Visualization](#visualization)
-* [Prompt Logging](#prompt-logging)
-* [Tech Stack](#tech-stack)
-* [Contributing](#contributing)
-* [License](#license)
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Agents](#agents)
+- [Data Flow](#data-flow)
+- [Visualization](#visualization)
+- [Prompt Logging](#prompt-logging)
+- [Tech Stack](#tech-stack)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -30,11 +30,11 @@
 
 ## Features
 
-* 📥 GitHub ingest (live or static)
-* 🧠 LangGraph-based agent pipeline
-* 🧾 Slack slash commands with narrative + charts
-* 🔍 Auditable prompt logging
-* ⚡ Docker-first, one-command deploy
+- 📥 GitHub ingest (live or static)
+- 🧠 LangGraph-based agent pipeline
+- 🧾 Slack slash commands with narrative + charts
+- 🔍 Auditable prompt logging
+- ⚡ Docker-first, one-command deploy
 
 ---
 
@@ -107,9 +107,9 @@ LANGCHAIN_API_KEY=xxx                 # If using LangSmith for logging/tracing
 
 Generates AI-powered GitHub report with:
 
-* DORA metrics
-* PNG chart
-* Narrative summary
+- DORA metrics
+- PNG chart
+- Narrative summary
 
 **Examples:**
 
@@ -135,14 +135,14 @@ Generates AI-powered GitHub report with:
 
 ## Agents
 
-* **start\_node** – Initializes the state
-* **harvester\_orchestrator** – Launches parallel harvesters
-* **harvester\_i** – Fetches GitHub commits in segments
-* **diff\_analyst\_i** – Analyzes diffs per segment
-* **batch\_collector** – Merges results from all analysts
-* **aggregator** – Computes DORA and code metrics
-* **narrator** – Generates summaries and insights
-* **slack\_reporter** – Sends results to Slack
+- **start_node** – Initializes the state
+- **harvester_orchestrator** – Launches parallel data collectors
+- **data_collector_i** – Fetches GitHub commits in segments
+- **code_reviewer_i** – Reviews code changes per segment
+- **batch_collector** – Merges results from all reviewers
+- **aggregator** – Computes DORA and code metrics
+- **narrator** – Generates summaries and insights
+- **slack_reporter** – Sends results to Slack
 
 ---
 
@@ -157,24 +157,24 @@ Generates AI-powered GitHub report with:
 
 ## Visualization
 
-* Charts rendered using `matplotlib`
-* Sent as PNG in Slack threads
+- Charts rendered using `matplotlib`
+- Sent as PNG in Slack threads
 
 ---
 
 ## Prompt Logging
 
-* Inputs, prompts, and responses are logged
-* Optional file-based logging support
+- Inputs, prompts, and responses are logged
+- Optional file-based logging support
 
 ---
 
 ## Tech Stack
 
-* **LangChain** `0.3.26`
-* **LangGraph OSS** `0.5.0`
-* \*\*Slack Bolt (Python)\`
-* **matplotlib**, **Docker**, **Python 3.10+**
+- **LangChain** `0.3.26`
+- **LangGraph OSS** `0.5.0`
+- \*\*Slack Bolt (Python)\`
+- **matplotlib**, **Docker**, **Python 3.10+**
 
 ---
 
@@ -182,10 +182,10 @@ Generates AI-powered GitHub report with:
 
 PRs welcome — this repository follows formal open-source standards:
 
-* [Code of Conduct](./CODE_OF_CONDUCT.md)
-* [Contributing Guide](./CONTRIBUTING.md)
-* [Issue Template](./ISSUE_TEMPLATE.md)
-* [Security Policy](./SECURITY.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Contributing Guide](./CONTRIBUTING.md)
+- [Issue Template](./ISSUE_TEMPLATE.md)
+- [Security Policy](./SECURITY.md)
 
 Please review them before contributing or reporting issues.
 

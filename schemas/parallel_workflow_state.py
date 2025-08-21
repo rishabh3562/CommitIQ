@@ -8,11 +8,11 @@ class ParallelWorkflowStateV2(TypedDict, total=False):
     repo: str
     since: str
     until: str
-    shards: List[List[dict]]
-    harvested: Annotated[List[dict], operator.add]
-    analyzed: Annotated[List[dict], operator.add]
-    harvested_shards: Annotated[List[List[dict]], operator.add]
-    diff_results: Annotated[List[dict], operator.add]
+    data_segments: List[List[dict]]
+    collected: Annotated[List[dict], operator.add]
+    processed: Annotated[List[dict], operator.add]
+    collected_data: Annotated[List[List[dict]], operator.add]
+    analysis_output: Annotated[List[dict], operator.add]
 
     # Post-aggregator
     aggregated: dict  # Final metrics & insights

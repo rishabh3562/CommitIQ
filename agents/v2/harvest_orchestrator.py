@@ -1,6 +1,6 @@
 ### agents/harvester_orchestrator.py
 from pprint import pprint
-from configs.constants import NUM_SHARDS
+from configs.constants import DATA_SHARDS
 from utils.v2.github_helper import get_full_commit,get_incident_issues
 
 def harvester_orchestrator(state):
@@ -12,11 +12,11 @@ def harvester_orchestrator(state):
 
     all_commits = get_full_commit(owner, repo, since, until)
     if not all_commits:
-        return {"shards": [[] for _ in range(NUM_SHARDS)]}
+        return {"data_segments": [[] for _ in range(DATA_SHARDS)]}
 
     print(f"[HARVESTER_ORCHESTRATOR] Total commits fetched: {len(all_commits)}")
     if not all_commits:
-        return {"shards": [[] for _ in range(NUM_SHARDS)]}
+        return {"data_segments": [[] for _ in range(DATA_SHARDS)]}
     # fetch incidents for MTTR
     print(f"[HARVESTER_ORCHESTRATOR] fetching incidents...")
     incidents = get_incident_issues(owner, repo, since)
@@ -29,12 +29,12 @@ def harvester_orchestrator(state):
         for i in incidents
     ]
 
-    # Divide commits into NUM_SHARDS
-    shards = [all_commits[i::NUM_SHARDS] for i in range(NUM_SHARDS)]
+    # Divide commits into DATA_SHARDS
+    segments = [all_commits[i::DATA_SHARDS] for i in range(DATA_SHARDS)]
     return {
-        "shards": [
-            [{"shard_id": i, "total_shards": NUM_SHARDS, **c} for c in shard] if shard else []
-            for i, shard in enumerate(shards)
+        "data_segments": [
+            [{"segment_id": i, "total_segments": DATA_SHARDS, **c} for c in segment] if segment else []
+            for i, segment in enumerate(segments)
         ]
     }
 

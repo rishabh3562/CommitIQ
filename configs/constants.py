@@ -2,9 +2,9 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-NUM_PARALLEL = 5  # Change as needed
-NUM_SHARDS = NUM_PARALLEL
-SPIKE_THRESHOLD=1000
+CONCURRENT_WORKERS = 5  # Change as needed
+DATA_SHARDS = CONCURRENT_WORKERS
+CHURN_LIMIT = 1000
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_REPO="rishabh3562/PromptOps"
 USE_FAKE_DATA = os.getenv("USE_FAKE_DATA", "False").lower() == "true"
